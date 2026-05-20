@@ -1086,7 +1086,7 @@ const provider = new GoogleAuthProvider();
 
 window.signInWithGoogle = async function() {
   try {
-    await signInWithPopup(auth, provider);
+    await signInWithRedirect(auth, provider);
   } catch(e) {
     const el = document.getElementById('loginErr');
     el.textContent = 'Google нэвтрэлт амжилтгүй. Дахин оролдоно уу.';
@@ -1094,6 +1094,15 @@ window.signInWithGoogle = async function() {
     setTimeout(()=>el.style.display='none', 4000);
   }
 };
+
+// Handle redirect result when page loads
+getRedirectResult(auth).then((result) => {
+  if (result?.user) {
+    // onAuthStateChanged will handle the rest
+  }
+}).catch((e) => {
+  console.error('Redirect error:', e);
+});
 
 window.logout = function() {
   signOut(auth);
@@ -1115,5 +1124,7 @@ onAuthStateChanged(auth, (user) => {
 // =========== INIT ===========
 initDB();
 </script>
+</body>
+</html>
 </body>
 </html>
